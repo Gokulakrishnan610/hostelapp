@@ -1,0 +1,43 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block content %}
+<div class="stats-container">
+    <div class="summary-cards">
+        <div class="card">
+            <h3>Total Rooms</h3>
+            <p class="number">{{ total_rooms }}</p>
+        </div>
+        <div class="card">
+            <h3>Occupied Rooms</h3>
+            <p class="number">{{ total_occupied }}</p>
+        </div>
+    </div>
+
+    <div class="stats-table">
+        <h2>Room Statistics</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Location</th>
+                    <th>Occupied</th>
+                    <th>Available</th>
+                    <th>Revenue</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for room in room_stats %}
+                <tr>
+                    <td>{{ room.category }}</td>
+                    <td>{{ room.location }}</td>
+                    <td>{{ room.occupied }}</td>
+                    <td>{{ room.available_seats }}</td>
+                    <td>₹{{ room.revenue|default:"0" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %} 

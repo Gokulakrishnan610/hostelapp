@@ -1,0 +1,362 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/custom.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+    <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="dashboard-container">
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+        <div class="stat-card bg-primary">
+            <div class="stat-icon">
+                <i class="fas fa-user-graduate"></i>
+            </div>
+            <div class="stat-details">
+                <h3>{{ total_students }}</h3>
+                <p>Total Students</p>
+                <small>{{ today_registrations }} new today</small>
+            </div>
+        </div>
+        
+        <div class="stat-card bg-success">
+            <div class="stat-icon">
+                <i class="fas fa-door-open"></i>
+            </div>
+            <div class="stat-details">
+                <h3>{{ occupied_rooms }}/{{ total_rooms }}</h3>
+                <p>Rooms Occupied</p>
+                <div class="progress">
+                    <div class="progress-bar" style="width: {{ occupancy_percentage }}%"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stat-card bg-warning">
+            <div class="stat-icon">
+                <i class="fas fa-money-bill-wave"></i>
+            </div>
+            <div class="stat-details">
+                <h3>₹{{ total_revenue }}</h3>
+                <p>Total Revenue</p>
+                <small>{{ pending_payments }} pending payments</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-grid">
+        <!-- Room Categories -->
+        <div class="content-card">
+            <div class="card-header">
+                <h3>Room Occupancy</h3>
+            </div>
+            <div class="card-body">
+                {% for category in room_categories %}
+                <div class="progress-group">
+                    <div class="progress-info">
+                        <span>{{ category.category }}</span>
+                        <span>{{ category.occupied }}/{{ category.total }}</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar" style="width: {% widthratio category.occupied category.total 100 %}%"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Recent Activities -->
+        <div class="content-card">
+            <div class="card-header">
+                <h3>Recent Activities</h3>
+            </div>
+            <div class="card-body">
+                <div class="activity-list">
+                    {% for activity in recent_activities %}
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas {% if activity.action == 'Registration' %}fa-user-plus{% else %}fa-money-check{% endif %}"></i>
+                        </div>
+                        <div class="activity-details">
+                            <div class="activity-main">
+                                <span class="activity-name">{{ activity.student_name }}</span>
+                                <span class="activity-action">{{ activity.action }}</span>
+                            </div>
+                            <div class="activity-meta">
+                                <span class="activity-date">{{ activity.date|date:"M d, Y H:i" }}</span>
+                                <span class="status-badge status-{{ activity.status|lower }}">{{ activity.status }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pending Verifications -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Pending Payment Verifications</h3>
+            </div>
+            <div class="card-body p-0">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Room</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for payment in pending_verifications %}
+                        <tr>
+                            <td>{{ payment.student.name }}</td>
+                            <td>{{ payment.room.category }} - {{ payment.room.location }}</td>
+                            <td>₹{{ payment.amount }}</td>
+                            <td>{{ payment.created_at|date:"d M Y" }}</td>
+                            <td>
+                                <form method="post" style="display: inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="verify_payment">
+                                    <input type="hidden" name="payment_id" value="{{ payment.id }}">
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        <i class="fas fa-check"></i> Verify
+                                    </button>
+                                </form>
+                                <form method="post" style="display: inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="reject_payment">
+                                    <input type="hidden" name="payment_id" value="{{ payment.id }}">
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-times"></i> Reject
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics -->
+<div class="row">
+    <!-- Room Category Stats -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Room Occupancy by Category</h3>
+            </div>
+            <div class="card-body">
+                {% for category in room_categories %}
+                <div class="progress-group">
+                    <span class="progress-text">{{ category.category }}</span>
+                    <span class="float-right">{{ category.occupied }}/{{ category.total }}</span>
+                    <div class="progress progress-sm">
+                        <div class="progress-bar bg-primary" style="width: {% widthratio category.occupied category.total 100 %}%"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Payment Stats -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Payment Statistics</h3>
+            </div>
+            <div class="card-body">
+                {% for stat in payment_stats %}
+                <div class="progress-group">
+                    <span class="progress-text">{{ stat.status }}</span>
+                    <span class="float-right">₹{{ stat.total_amount|default:0 }}</span>
+                    <div class="progress progress-sm">
+                        <div class="progress-bar 
+                            {% if stat.status == 'Confirmed' %}bg-success
+                            {% elif stat.status == 'Pending' %}bg-warning
+                            {% else %}bg-danger{% endif %}"
+                            style="width: {% widthratio stat.count payment_stats|length 100 %}%">
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Activities -->
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Recent Students</h3>
+            </div>
+            <div class="card-body p-0">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Room</th>
+                            <th>Status</th>
+                            <th>Registered</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in recent_students %}
+                        <tr>
+                            <td>{{ student.name }}</td>
+                            <td>{{ student.room.category|default:"-" }}</td>
+                            <td>
+                                <span class="badge badge-{% if student.payment_status == 'Confirmed' %}success
+                                    {% elif student.payment_status == 'Pending' %}warning
+                                    {% else %}danger{% endif %}">
+                                    {{ student.payment_status }}
+                                </span>
+                            </td>
+                            <td>{{ student.created_at|date:"d M Y" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Recent Payments</h3>
+            </div>
+            <div class="card-body p-0">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for payment in recent_payments %}
+                        <tr>
+                            <td>{{ payment.student.name }}</td>
+                            <td>₹{{ payment.amount }}</td>
+                            <td>
+                                <span class="badge badge-{% if payment.status == 'Confirmed' %}success
+                                    {% elif payment.status == 'Pending' %}warning
+                                    {% else %}danger{% endif %}">
+                                    {{ payment.status }}
+                                </span>
+                            </td>
+                            <td>{{ payment.created_at|date:"d M Y" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add this to your dashboard -->
+<div class="col-md-3">
+  <div class="small-box bg-warning">
+    <div class="inner">
+      <h3>{{ pending_bookings_count }}</h3>
+      <p>Pending Booking Requests</p>
+    </div>
+    <div class="icon">
+      <i class="fa fa-bed"></i>
+    </div>
+    <a href="{% url 'admin:booking-requests' %}" class="small-box-footer">
+      View Requests <i class="fas fa-arrow-circle-right"></i>
+    </a>
+  </div>
+</div>
+
+<!-- Add this to your dashboard -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Recent Booking Requests</h3>
+                <div class="card-tools">
+                    <a href="{% url 'admin:hostel_management_bookingrequest_changelist' %}" class="btn btn-tool">
+                        <i class="fas fa-list"></i> View All
+                    </a>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Room</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in recent_bookings %}
+                        <tr>
+                            <td>{{ booking.student.name }}</td>
+                            <td>{{ booking.room.category }} - {{ booking.room.location }}</td>
+                            <td>₹{{ booking.amount }}</td>
+                            <td>
+                                {% if booking.status == 'Pending' %}
+                                <span class="badge badge-warning">Pending</span>
+                                {% elif booking.status == 'Approved' %}
+                                <span class="badge badge-success">Approved</span>
+                                {% elif booking.status == 'Rejected' %}
+                                <span class="badge badge-danger">Rejected</span>
+                                {% else %}
+                                <span class="badge badge-secondary">{{ booking.status }}</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ booking.created_at|date:"d M Y" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center">No recent booking requests</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer text-center">
+                <a href="{% url 'admin:hostel_management_bookingrequest_changelist' %}?status__exact=Pending" class="btn btn-primary">
+                    Manage Pending Requests ({{ pending_bookings_count }})
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %} 

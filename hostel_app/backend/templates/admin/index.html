@@ -1,0 +1,13 @@
+{% extends "admin/index.html" %}
+{% load i18n %}
+
+{% block sidebar %}
+{{ block.super }}
+<div class="module" style="margin-top: 20px;">
+  <h2>{% trans 'Hostel Management' %}</h2>
+  <ul>
+    <li><a href="{% url 'admin:booking-requests' %}">{% trans 'Booking Requests' %}</a></li>
+    <!-- Add other custom links here -->
+  </ul>
+</div>
+{% endblock %} 

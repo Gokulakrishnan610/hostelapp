@@ -1,0 +1,139 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static admin_urls %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <style>
+    .status-card {
+      padding: 20px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .pending-card {
+      background-color: #fff3cd;
+      border: 1px solid #ffeeba;
+    }
+    .approved-card {
+      background-color: #d4edda;
+      border: 1px solid #c3e6cb;
+    }
+    .rejected-card {
+      background-color: #f8d7da;
+      border: 1px solid #f5c6cb;
+    }
+    .status-number {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .booking-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .booking-table th, .booking-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    .booking-table tr:hover {
+      background-color: #f5f5f5;
+    }
+  </style>
+{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+  &rsaquo; {% trans 'Booking Dashboard' %}
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+  <h1>Booking Request Dashboard</h1>
+  
+  <div class="row">
+    <div class="col-md-4">
+      <div class="status-card pending-card">
+        <div class="status-number">{{ pending_count }}</div>
+        <div>Pending Requests</div>
+        <div style="margin-top: 10px;">
+          <a href="{% url 'admin:bookings_bookingrequest_changelist' %}?status__exact=Pending" class="button">
+            View Pending
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4">
+      <div class="status-card approved-card">
+        <div class="status-number">{{ approved_count }}</div>
+        <div>Approved Bookings</div>
+        <div style="margin-top: 10px;">
+          <a href="{% url 'admin:bookings_bookingrequest_changelist' %}?status__exact=Approved" class="button">
+            View Approved
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4">
+      <div class="status-card rejected-card">
+        <div class="status-number">{{ rejected_count }}</div>
+        <div>Rejected Bookings</div>
+        <div style="margin-top: 10px;">
+          <a href="{% url 'admin:bookings_bookingrequest_changelist' %}?status__exact=Rejected" class="button">
+            View Rejected
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <h2>Recent Booking Requests</h2>
+  
+  {% if recent_bookings %}
+    <table class="booking-table">
+      <thead>
+        <tr>
+          <th>Student</th>
+          <th>Room</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for booking in recent_bookings %}
+        <tr>
+          <td>{{ booking.student.name }}</td>
+          <td>{{ booking.room.category }} - {{ booking.room.location }}</td>
+          <td>₹{{ booking.amount }}</td>
+          <td>
+            {% if booking.status == 'Pending' %}
+            <span style="color: #FFA500; font-weight: bold;">Pending</span>
+            {% elif booking.status == 'Approved' %}
+            <span style="color: #28a745; font-weight: bold;">Approved</span>
+            {% elif booking.status == 'Rejected' %}
+            <span style="color: #dc3545; font-weight: bold;">Rejected</span>
+            {% else %}
+            <span>{{ booking.status }}</span>
+            {% endif %}
+          </td>
+          <td>{{ booking.created_at|date:"d M Y" }}</td>
+          <td>
+            <a href="{% url 'admin:bookings_bookingrequest_change' booking.id %}" class="button">
+              View Details
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No recent booking requests found.</p>
+  {% endif %}
+</div>
+{% endblock %} 

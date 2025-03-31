@@ -1,0 +1,116 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static admin_urls %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <style>
+    .booking-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .booking-table th, .booking-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    .booking-table tr:hover {
+      background-color: #f5f5f5;
+    }
+    .booking-status {
+      font-weight: bold;
+    }
+    .status-pending {
+      color: #FF9800;
+    }
+    .status-confirmed {
+      color: #4CAF50;
+    }
+    .status-failed {
+      color: #F44336;
+    }
+    .action-btn {
+      padding: 6px 12px;
+      margin-right: 5px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .btn-approve {
+      background-color: #4CAF50;
+      color: white;
+    }
+    .btn-reject {
+      background-color: #F44336;
+      color: white;
+    }
+    .payment-details {
+      margin-top: 10px;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border-radius: 4px;
+    }
+  </style>
+{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+  &rsaquo; {% trans 'Booking Requests' %}
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+  <h1>Booking Requests</h1>
+  
+  {% if messages %}
+  <ul class="messagelist">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  
+  {% if pending_payments %}
+    <div class="results">
+      <table class="booking-table">
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Room</th>
+            <th>Transaction ID</th>
+            <th>Amount</th>
+            <th>Request Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for payment in pending_payments %}
+          <tr>
+            <td>
+              <strong>{{ payment.student.name }}</strong><br>
+              <small>{{ payment.student.email }}</small><br>
+              <small>Gender: {{ payment.student.gender }}</small>
+            </td>
+            <td>
+              {{ payment.room.category }} - {{ payment.room.location }}<br>
+              <small>Menu: {{ payment.room.menu }}</small><br>
+              <small>Capacity: {{ payment.room.pax_per_room }} persons</small>
+            </td>
+            <td>{{ payment.transaction_id }}</td>
+            <td>₹{{ payment.amount }}</td>
+            <td>{{ payment.created_at|date:"d M Y, H:i" }}</td>
+            <td>
+              <a href="{% url 'admin:approve-booking' payment.id %}" class="action-btn btn-approve">Approve</a>
+              <a href="{% url 'admin:reject-booking' payment.id %}" class="action-btn btn-reject" onclick="return confirm('Are you sure you want to reject this booking?');">Reject</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p>No pending booking requests found.</p>
+  {% endif %}
+</div>
+{% endblock %} 
