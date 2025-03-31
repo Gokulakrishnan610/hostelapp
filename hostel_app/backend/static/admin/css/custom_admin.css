@@ -1,0 +1,64 @@
+/* Header Styling */
+#header {
+    background: #2c3e50;
+    color: #fff;
+}
+
+/* Main Content Area */
+#content {
+    padding: 20px;
+}
+
+/* List View Styling */
+#changelist table thead th {
+    background: #34495e;
+    color: #fff;
+}
+
+.row1 {
+    background: #f9f9f9;
+}
+
+.row2 {
+    background: #ffffff;
+}
+
+/* Form Styling */
+.module h2, .module caption {
+    background: #34495e;
+    color: #fff;
+}
+
+.submit-row input {
+    background: #2c3e50;
+}
+
+.submit-row input:hover {
+    background: #34495e;
+}
+
+/* Dashboard Styling */
+.dashboard #content {
+    width: 100%;
+}
+
+.dashboard .module table th {
+    width: 100%;
+}
+
+.dashboard .module table td {
+    white-space: nowrap;
+}
+
+/* Custom Status Colors */
+.status-confirmed {
+    color: #27ae60;
+}
+
+.status-pending {
+    color: #f39c12;
+}
+
+.status-failed {
+    color: #c0392b;
+} 

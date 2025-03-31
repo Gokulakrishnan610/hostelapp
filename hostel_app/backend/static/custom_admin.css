@@ -1,0 +1,29 @@
+:root {
+    --primary: #1976d2;
+    --secondary: #dc004e;
+}
+
+.select2-container--default .select2-selection--single {
+    height: 38px;
+    padding: 8px;
+}
+
+.card {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 1rem;
+}
+
+.table thead th {
+    background-color: var(--primary);
+    color: white;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-primary:hover {
+    background-color: #1565c0;
+    border-color: #1565c0;
+} 

@@ -1,0 +1,240 @@
+[
+  {
+    "model": "rooms.room",
+    "fields": {
+      "category": "2 AC A",
+      "location": "BH2",
+      "menu": "Veg",
+      "rooms_count": 30,
+      "pax_per_room": 2,
+      "capacity": 60,
+      "available_seats": 60,
+      "created_at": "2024-03-29T21:45:00Z",
+      "updated_at": "2024-03-29T21:45:00Z"
+    }
+  },
+  {
+    "model": "rooms.room",
+    "fields": {
+      "category": "3 Non AC C",
+      "location": "Thandalam",
+      "menu": "Non Veg",
+      "rooms_count": 2,
+      "pax_per_room": 3,
+      "capacity": 6,
+      "available_seats": 6,
+      "created_at": "2024-03-29T21:45:00Z",
+      "updated_at": "2024-03-29T21:45:00Z"
+    }
+  },
+  {
+    "model": "rooms.room",
+    "pk": 3,
+    "fields": {
+      "category": "4 AC A",
+      "location": "BH2",
+      "menu": "Veg",
+      "rooms_count": 79,
+      "pax_per_room": 4,
+      "capacity": 316,
+      "available_seats": 316,
+      "created_at": "2024-03-29T21:45:00Z",
+      "updated_at": "2024-03-29T21:45:00Z"
+    }
+  },
+  {
+    "model": "rooms.room",
+    "pk": 4,
+    "fields": {
+      "category": "4 Non AC A",
+      "location": "Habitat",
+      "menu": "Non Veg",
+      "rooms_count": 152,
+      "pax_per_room": 4,
+      "capacity": 608,
+      "available_seats": 608,
+      "created_at": "2024-03-29T21:45:00Z",
+      "updated_at": "2024-03-29T21:45:00Z"
+    }
+  },
+  {
+    "model": "rooms.room",
+    "pk": 5,
+    "fields": {
+      "category": "5 Non AC C",
+      "location": "Thandalam",
+      "menu": "Non Veg",
+      "rooms_count": 27,
+      "pax_per_room": 5,
+      "capacity": 135,
+      "available_seats": 135,
+      "created_at": "2024-03-29T21:45:00Z",
+      "updated_at": "2024-03-29T21:45:00Z"
+    }
+  },
+  {
+    "model": "rooms.room",
+    "pk": 6,
+    "fields": {
+      "category": "6 Non AC C",
+      "location": "Habitat",
+      "menu": "Non Veg",
+      "rooms_count": 240,
+      "pax_per_room": 6,
+      "capacity": 1440,
+      "available_seats": 1440,
+      "created_at": "2024-03-29T21:45:00Z",
+      "updated_at": "2024-03-29T21:45:00Z"
+    }
+  },
+  {
+    "model": "rooms.room",
+    "pk": 7,
+    "fields": {
+      "category": "2 AC A",
+      "location": "GH1 (BH3)",
+      "menu": "Veg",
+      "rooms_count": 6,
+      "pax_per_room": 2,
+      "capacity": 12,
+      "available_seats": 12,
+      "created_at": "2024-03-29T21:45:00Z",
+      "updated_at": "2024-03-29T21:45:00Z"
+    }
+  },
+  {
+    "model": "rooms.room",
+    "pk": 8,
+    "fields": {
+      "category": "2 AC A",
+      "location": "GH2",
+      "menu": "Veg",
+      "rooms_count": 27,
+      "pax_per_room": 2,
+      "capacity": 54,
+      "available_seats": 54,
+      "created_at": "2024-03-29T21:45:00Z",
+      "updated_at": "2024-03-29T21:45:00Z"
+    }
+  },
+  {
+    "model": "rooms.room",
+    "pk": 9,
+    "fields": {
+      "category": "2 AC A",
+      "location": "GH3 (BH1)",
+      "menu": "Veg",
+      "rooms_count": 6,
+      "pax_per_room": 2,
+      "capacity": 12,
+      "available_seats": 12,
+      "created_at": "2024-03-29T21:45:00Z",
+      "updated_at": "2024-03-29T21:45:00Z"
+    }
+  },
+  {
+    "model": "rooms.room",
+    "pk": 10,
+    "fields": {
+      "category": "2 Non AC C",
+      "location": "GH1 (BH3)",
+      "menu": "Veg",
+      "rooms_count": 118,
+      "pax_per_room": 2,
+      "capacity": 236,
+      "available_seats": 236,
+      "created_at": "2024-03-29T21:45:00Z",
+      "updated_at": "2024-03-29T21:45:00Z"
+    }
+  },
+  {
+    "model": "rooms.room",
+    "pk": 11,
+    "fields": {
+      "category": "2 Non AC C",
+      "location": "GH3 (BH1)",
+      "menu": "Veg",
+      "rooms_count": 43,
+      "pax_per_room": 2,
+      "capacity": 86,
+      "available_seats": 86,
+      "created_at": "2024-03-29T21:45:00Z",
+      "updated_at": "2024-03-29T21:45:00Z"
+    }
+  },
+  {
+    "model": "rooms.room",
+    "pk": 12,
+    "fields": {
+      "category": "3 AC A",
+      "location": "GH3 (BH1)",
+      "menu": "Veg",
+      "rooms_count": 18,
+      "pax_per_room": 3,
+      "capacity": 36,
+      "available_seats": 36,
+      "created_at": "2024-03-29T21:45:00Z",
+      "updated_at": "2024-03-29T21:45:00Z"
+    }
+  },
+  {
+    "model": "rooms.room",
+    "pk": 13,
+    "fields": {
+      "category": "3 Non AC C",
+      "location": "GH3 (BH1)",
+      "menu": "Veg",
+      "rooms_count": 80,
+      "pax_per_room": 3,
+      "capacity": 240,
+      "available_seats": 240,
+      "created_at": "2024-03-29T21:45:00Z",
+      "updated_at": "2024-03-29T21:45:00Z"
+    }
+  },
+  {
+    "model": "rooms.room",
+    "pk": 14,
+    "fields": {
+      "category": "4 Non AC C",
+      "location": "GH3 (BH1)",
+      "menu": "Veg",
+      "rooms_count": 76,
+      "pax_per_room": 4,
+      "capacity": 304,
+      "available_seats": 304,
+      "created_at": "2024-03-29T21:45:00Z",
+      "updated_at": "2024-03-29T21:45:00Z"
+    }
+  },
+  {
+    "model": "rooms.room",
+    "pk": 15,
+    "fields": {
+      "category": "4 Non AC C",
+      "location": "GH2",
+      "menu": "Veg",
+      "rooms_count": 178,
+      "pax_per_room": 4,
+      "capacity": 712,
+      "available_seats": 712,
+      "created_at": "2024-03-29T21:45:00Z",
+      "updated_at": "2024-03-29T21:45:00Z"
+    }
+  },
+  {
+    "model": "rooms.room",
+    "pk": 16,
+    "fields": {
+      "category": "6 Non AC C",
+      "location": "GH1 (BH3)",
+      "menu": "Veg",
+      "rooms_count": 13,
+      "pax_per_room": 6,
+      "capacity": 78,
+      "available_seats": 78,
+      "created_at": "2024-03-29T21:45:00Z",
+      "updated_at": "2024-03-29T21:45:00Z"
+    }
+  }
+] 
